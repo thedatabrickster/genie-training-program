@@ -1,5 +1,4 @@
 # Databricks notebook source
-
 # MAGIC %md
 # MAGIC # Module 3: Data Preparation — Walkthrough
 # MAGIC
@@ -42,35 +41,35 @@ print(f"Using: {CATALOG}.{SCHEMA}")
 # MAGIC The data pipeline has **4 steps**, orchestrated by a Databricks Asset Bundle job:
 # MAGIC
 # MAGIC ```
-# MAGIC      ┌────────────────────────────────────────────┐
-# MAGIC      │  Prerequisites: 00_setup_prerequisites.py │
-# MAGIC      │  Catalog + Schema + Volume + File upload   │
-# MAGIC      └────────────────────┬───────────────────────┘
-# MAGIC                           │
-# MAGIC           ┌───────────────┴───────────────┐
-# MAGIC           ▼                               ▼
-# MAGIC ┌─────────────────────────────┐  ┌────────────────────────────────┐
-# MAGIC │  Step 1: 02_load_stock_data.py │  │  Step 2: 03_load_economic_data.py│
-# MAGIC │  yfinance API               │  │  IMF WEO from Volume          │
-# MAGIC │  ─────────────────────────  │  │  ────────────────────────────────│
-# MAGIC │  • dim_companies            │  │  • fact_economic         │
-# MAGIC │  • dim_sectors              │  │    _indicators           │
-# MAGIC │  • fact_stock_prices        │  │  (IMF WEO from Volume)   │
-# MAGIC │  • fact_sp500_benchmark     │  │                          │
-# MAGIC │  • fact_financials          │  │                          │
-# MAGIC └──────────────┬──────────────┘  └────────────┬─────────────┘
-# MAGIC                │                              │
-# MAGIC                ▼                              ▼
-# MAGIC      ┌────────────────────────────────────────────┐
-# MAGIC      │     Step 3: 04_create_data_model.sql       │
-# MAGIC      │     4 pre-joined views for Genie           │
-# MAGIC      └────────────────────────────────────────────┘
-# MAGIC                │
-# MAGIC                ▼
-# MAGIC      ┌────────────────────────────────────────────┐
-# MAGIC      │     Step 4: 05_grant_genie_access.py       │
-# MAGIC      │     Unity Catalog SELECT grants            │
-# MAGIC      └────────────────────────────────────────────┘
+# MAGIC       ┌──────────────────────────────────────────────────┐
+# MAGIC       │    Prerequisites: 00_setup_prerequisites.py      │
+# MAGIC       │    Catalog + Schema + Volume + File upload       │
+# MAGIC       └────────────────────────┬─────────────────────────┘
+# MAGIC                                │
+# MAGIC              ┌─────────────────┴─────────────────┐
+# MAGIC              ▼                                   ▼
+# MAGIC ┌──────────────────────────────┐  ┌────────────────────────────────┐
+# MAGIC │ Step 1: 02_load_stock_data   │  │ Step 2: 03_load_economic_data  │
+# MAGIC │ yfinance API                 │  │ IMF WEO from Volume            │
+# MAGIC │ ──────────────────────────── │  │ ────────────────────────────── │
+# MAGIC │ • dim_companies              │  │ • fact_economic_indicators     │
+# MAGIC │ • dim_sectors                │  │                                │
+# MAGIC │ • fact_stock_prices          │  │                                │
+# MAGIC │ • fact_sp500_benchmark       │  │                                │
+# MAGIC │ • fact_financials            │  │                                │
+# MAGIC └──────────────┬───────────────┘  └───────────────┬────────────────┘
+# MAGIC                │                                  │
+# MAGIC                ▼                                  ▼
+# MAGIC       ┌──────────────────────────────────────────────────┐
+# MAGIC       │      Step 3: 04_create_data_model.sql            │
+# MAGIC       │      4 pre-joined views for Genie                │
+# MAGIC       └──────────────────────────┬───────────────────────┘
+# MAGIC                                  │
+# MAGIC                                  ▼
+# MAGIC       ┌──────────────────────────────────────────────────┐
+# MAGIC       │      Step 4: 05_grant_genie_access.py            │
+# MAGIC       │      Unity Catalog SELECT grants                 │
+# MAGIC       └──────────────────────────────────────────────────┘
 # MAGIC ```
 # MAGIC
 # MAGIC - Steps 1 and 2 run **in parallel** (no shared dependencies)
