@@ -86,31 +86,21 @@ print(f"Volume '{CATALOG}.{SCHEMA}.{VOLUME_NAME}' — ready")
 
 # COMMAND ----------
 
-import requests
+import shutil
+import os
 
 volume_path = f"/Volumes/{CATALOG}/{SCHEMA}/{VOLUME_NAME}/{TSV_FILE}"
+workspace_path = f"/Workspace/Shared/genie-training-program/01_data_setup/{TSV_FILE}"
 
 # Check if file already exists in Volume
-try:
-    files = dbutils.fs.ls(f"dbfs:/Volumes/{CATALOG}/{SCHEMA}/{VOLUME_NAME}/")
-    existing = [f.name for f in files if TSV_FILE in f.name]
-    if existing:
-        print(f"File already exists in Volume at: {volume_path}")
-        print("Skipping download and upload.")
-    else:
-        # Download from Git repo
-        git_url = f"https://raw.githubusercontent.com/thedatabrickster/genie-training-program/main/01_data_setup/{TSV_FILE}"
-        response = requests.get(git_url)
-        if response.status_code == 200:
-            # Write to volume
-            with open(f"/dbfs{volume_path}", "wb") as f:
-                f.write(response.content)
-            print(f"Downloaded and uploaded: {git_url}")
-            print(f"                  →  {volume_path}")
-        else:
-            print(f"Failed to download from {git_url} (status: {response.status_code})")
-except Exception as e:
-    print(f"Error handling file: {e}")
+if os.path.exists(volume_path):
+    print(f"File already exists in Volume at: {volume_path}")
+    print("Skipping copy.")
+else:
+    # Copy from workspace path to Volume
+    shutil.copy2(workspace_path, volume_path)
+    print(f"Copied from: {workspace_path}")
+    print(f"         to: {volume_path}")
 
 # COMMAND ----------
 
@@ -215,7 +205,7 @@ job_spec = {
             "task_key": "load_stock_data",
             "description": "Pull S&P 500 stock data, financials, dividends, valuations, and benchmark via yfinance",
             "notebook_task": {
-                "notebook_path": "01_data_setup/02_load_stock_data",
+                "notebook_path": "01_data_setup/load_stock_data",
                 "base_parameters": {
                     "catalog": CATALOG,
                     "schema": SCHEMA
@@ -227,7 +217,7 @@ job_spec = {
             "task_key": "load_economic_data",
             "description": "Load IMF World Economic Outlook data for 20 major economies from Volume",
             "notebook_task": {
-                "notebook_path": "01_data_setup/03_load_economic_data",
+                "notebook_path": "01_data_setup/load_economic_data",
                 "base_parameters": {
                     "catalog": CATALOG,
                     "schema": SCHEMA
@@ -245,7 +235,7 @@ job_spec = {
             "sql_task": {
                 "warehouse_id": selected_wh.id,
                 "file": {
-                    "path": "01_data_setup/04_create_data_model.sql"
+                    "path": "01_data_setup/create_data_model.sql"
                 },
                 "parameters": {
                     "catalog": CATALOG,
@@ -261,7 +251,7 @@ job_spec = {
                 {"task_key": "create_data_model"}
             ],
             "notebook_task": {
-                "notebook_path": "01_data_setup/05_grant_genie_access",
+                "notebook_path": "01_data_setup/grant_genie_access",
                 "base_parameters": {
                     "catalog": CATALOG,
                     "schema": SCHEMA,
