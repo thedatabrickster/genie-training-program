@@ -49,10 +49,10 @@ print(f"Using: {CATALOG}.{SCHEMA}")
 # MAGIC                           │
 # MAGIC           ┌───────────────┴───────────────┐
 # MAGIC           ▼                               ▼
-# MAGIC ┌─────────────────────────────┐  ┌──────────────────────────┐
-# MAGIC │  Step 1: 02_load_stock_data.py │  │  Step 2: 03_load_economic_data.py   │
-# MAGIC │  yfinance API               │  │  _data.py                │
-# MAGIC │  ─────────────────────────  │  │  ────────────────────────│
+# MAGIC ┌─────────────────────────────┐  ┌────────────────────────────────┐
+# MAGIC │  Step 1: 02_load_stock_data.py │  │  Step 2: 03_load_economic_data.py│
+# MAGIC │  yfinance API               │  │  IMF WEO from Volume          │
+# MAGIC │  ─────────────────────────  │  │  ────────────────────────────────│
 # MAGIC │  • dim_companies            │  │  • fact_economic         │
 # MAGIC │  • dim_sectors              │  │    _indicators           │
 # MAGIC │  • fact_stock_prices        │  │  (IMF WEO from Volume)   │
