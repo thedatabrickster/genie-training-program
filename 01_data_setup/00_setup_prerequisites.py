@@ -215,7 +215,7 @@ job_spec = {
             "task_key": "load_stock_data",
             "description": "Pull S&P 500 stock data, financials, dividends, valuations, and benchmark via yfinance",
             "notebook_task": {
-                "notebook_path": "01_data_setup/load_stock_data",
+                "notebook_path": "01_data_setup/02_load_stock_data",
                 "base_parameters": {
                     "catalog": CATALOG,
                     "schema": SCHEMA
@@ -227,7 +227,7 @@ job_spec = {
             "task_key": "load_economic_data",
             "description": "Load IMF World Economic Outlook data for 20 major economies from Volume",
             "notebook_task": {
-                "notebook_path": "01_data_setup/load_economic_data",
+                "notebook_path": "01_data_setup/03_load_economic_data",
                 "base_parameters": {
                     "catalog": CATALOG,
                     "schema": SCHEMA
@@ -245,7 +245,7 @@ job_spec = {
             "sql_task": {
                 "warehouse_id": selected_wh.id,
                 "file": {
-                    "path": "01_data_setup/create_data_model.sql"
+                    "path": "01_data_setup/04_create_data_model.sql"
                 },
                 "parameters": {
                     "catalog": CATALOG,
@@ -261,7 +261,7 @@ job_spec = {
                 {"task_key": "create_data_model"}
             ],
             "notebook_task": {
-                "notebook_path": "01_data_setup/grant_genie_access",
+                "notebook_path": "01_data_setup/05_grant_genie_access",
                 "base_parameters": {
                     "catalog": CATALOG,
                     "schema": SCHEMA,
